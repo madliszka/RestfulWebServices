@@ -7,6 +7,15 @@ public class Product {
     public String getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public void setId(String id) {
         this.id = id;
     }

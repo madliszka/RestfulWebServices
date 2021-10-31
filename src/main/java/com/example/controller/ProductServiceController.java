@@ -1,55 +1,45 @@
 package com.example.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.example.controller.Product;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
+@RequestMapping(value = "/products")
 public class ProductServiceController {
-    private static Map<String, Product> productRepo = new HashMap<>();
-    static {
-        Product honey = new Product();
-        honey.setId("1");
-        honey.setName("Honey");
-        productRepo.put(honey.getId(), honey);
+    private final ProductRepository productRepo;
 
-        Product almond = new Product();
-        almond.setId("2");
-        almond.setName("Almond");
-        productRepo.put(almond.getId(), almond);
+    public ProductServiceController(ProductRepository productRepo) {
+        this.productRepo = productRepo;
     }
 
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> delete(@PathVariable("id") String id) {
-        productRepo.remove(id);
-        return new ResponseEntity<>("Product is deleted successsfully", HttpStatus.OK);
+        var removedProduct= productRepo.remove(id);
+        if (removedProduct.isPresent()) {
+            return new ResponseEntity<>(removedProduct + " is deleted successsfully", OK);
+        } else {
+            return new ResponseEntity<>("Nothing to delete!", NOT_FOUND);
+        }
     }
 
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
         productRepo.remove(id);
         product.setId(id);
         productRepo.put(id, product);
-        return new ResponseEntity<>("Product is updated successsfully", HttpStatus.OK);
+        return new ResponseEntity<>("Product is updated successsfully", OK);
     }
 
-    @RequestMapping(value = "/products", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<Object> createProduct(@RequestBody Product product) {
         productRepo.put(product.getId(), product);
-        return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("Product is created successfully", CREATED);
     }
 
-    @RequestMapping(value = "/products")
+    @GetMapping
     public ResponseEntity<Object> getProduct() {
-        return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
+        return new ResponseEntity<>(productRepo.values(), OK);
     }
 }
