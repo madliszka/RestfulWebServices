@@ -1,7 +1,10 @@
 package com.example.controller;
 
+import com.example.controller.exception.ApiNoElementException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -9,7 +12,6 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping(value = "/products")
 public class ProductServiceController {
     private final ProductRepository productRepo;
-
     public ProductServiceController(ProductRepository productRepo) {
         this.productRepo = productRepo;
     }
@@ -19,8 +21,8 @@ public class ProductServiceController {
         var removedProduct= productRepo.remove(id);
         if (removedProduct.isPresent()) {
             return new ResponseEntity<>(removedProduct + " is deleted successsfully", OK);
-        } else {
-            return new ResponseEntity<>("Nothing to delete!", NOT_FOUND);
+       } else {
+            throw new ApiNoElementException();
         }
     }
 
@@ -42,4 +44,5 @@ public class ProductServiceController {
     public ResponseEntity<Object> getProduct() {
         return new ResponseEntity<>(productRepo.values(), OK);
     }
+
 }
