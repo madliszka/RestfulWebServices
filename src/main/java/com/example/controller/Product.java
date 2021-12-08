@@ -1,13 +1,14 @@
 package com.example.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
     private String id;
     private String name;
-    public Quote myQuote = new QuoteFetcher().showQuote();
+    public Quote quote = new QuoteFetcher().getQuote();
     public String getId() {
         return id;
     }
@@ -17,7 +18,7 @@ public class Product {
         return "Product{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                myQuote + '\'' +
+                quote + '\'' +
                 '}';
     }
 

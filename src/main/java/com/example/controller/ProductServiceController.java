@@ -1,9 +1,10 @@
 package com.example.controller;
 
 import com.example.controller.exception.ApiNoElementException;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.client.RestTemplate;
 
 
 import static org.springframework.http.HttpStatus.*;
@@ -20,7 +21,7 @@ public class ProductServiceController {
     public ResponseEntity<Object> delete(@PathVariable("id") String id) {
         var removedProduct= productRepo.remove(id);
         if (removedProduct.isPresent()) {
-            return new ResponseEntity<>(removedProduct + " is deleted successsfully", OK);
+            return new ResponseEntity<>(removedProduct + " is deleted successfully", OK);
        } else {
             throw new ApiNoElementException();
         }
@@ -31,7 +32,7 @@ public class ProductServiceController {
         productRepo.remove(id);
         product.setId(id);
         productRepo.put(id, product);
-        return new ResponseEntity<>("Product is updated successsfully", OK);
+        return new ResponseEntity<>("Product is updated successfully", OK);
     }
 
     @PostMapping
@@ -44,5 +45,4 @@ public class ProductServiceController {
     public ResponseEntity<Object> getProduct() {
         return new ResponseEntity<>(productRepo.values(), OK);
     }
-
 }

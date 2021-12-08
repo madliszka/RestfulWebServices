@@ -1,9 +1,7 @@
 package com.example.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Quote {
@@ -11,8 +9,6 @@ public class Quote {
     private String type;
     private Value value;
 
-    public Quote() {
-    }
 
     public String getType() {
         return type;

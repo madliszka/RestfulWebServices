@@ -3,7 +3,7 @@ package com.example.controller.exception;
 import org.springframework.http.HttpStatus;
 
 import java.time.ZonedDateTime;
-//ToDO: zmienić na response
+
 public class ApiException {
     private final String message;
     private  Throwable throwable;
